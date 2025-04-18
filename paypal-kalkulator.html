@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayPal befizetés kalkulátor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f0f0f0;
+    }
+    .calculator {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 100%;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #007700;
+    }
+    @media (max-width: 600px) {
+      .calculator {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>PayPal befizetés kalkulátor</h2>
+    <label for="usd">Domain ára (USD):</label>
+    <input type="number" id="usd" value="11.99" step="0.01">
+
+    <label for="extra">Biztonsági ráhagyás (%):</label>
+    <input type="number" id="extra" value="10" step="1">
+
+    <label for="rate">PayPal árfolyam (Ft/USD):</label>
+    <input type="number" id="rate" value="390" step="1">
+
+    <div class="result" id="result">Szükséges forint összeg: - Ft</div>
+  </div>
+
+  <script>
+    const usdInput = document.getElementById('usd');
+    const extraInput = document.getElementById('extra');
+    const rateInput = document.getElementById('rate');
+    const resultDiv = document.getElementById('result');
+
+    function calculate() {
+      const usd = parseFloat(usdInput.value);
+      const extra = parseFloat(extraInput.value);
+      const rate = parseFloat(rateInput.value);
+      
+      if (isNaN(usd) || isNaN(extra) || isNaN(rate)) {
+        resultDiv.textContent = 'Adj meg minden értéket.';
+        return;
+      }
+
+      const totalUsd = usd * (1 + extra / 100);
+      const totalHuf = Math.ceil(totalUsd * rate);
+
+      resultDiv.textContent = `Szükséges forint összeg: ${totalHuf.toLocaleString()} Ft`;
+    }
+
+    usdInput.addEventListener('input', calculate);
+    extraInput.addEventListener('input', calculate);
+    rateInput.addEventListener('input', calculate);
+
+    calculate();
+  </script>
+</body>
+</html>
